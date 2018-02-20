@@ -1,0 +1,12 @@
+{
+    "name": "aiiro/laravel-factory-generator",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "aiiro",
+            "email": "aiiro@users.noreply.github.com"
+        }
+    ],
+    "require": {}
+}
