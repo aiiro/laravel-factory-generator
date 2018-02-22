@@ -1,6 +1,5 @@
 {
     "name": "aiiro/laravel-factory-generator",
-    "type": "library",
     "license": "MIT",
     "authors": [
         {
@@ -8,5 +7,18 @@
             "email": "aiiro@users.noreply.github.com"
         }
     ],
-    "require": {}
+    "autoload": {
+        "psr-4": {
+            "Aiiro\\Factory\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Aiiro\\Factory\\Tests\\": "tests/"
+        }
+    },
+    "require": {},
+    "require-dev": {
+        "orchestra/testbench": "~3.6"
+    }
 }
