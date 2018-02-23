@@ -1,6 +1,6 @@
 <?php
 
-namespace Aiiro\Factory\Console\Commands;
+namespace Aiiro\Factory\Commands;
 
 use Illuminate\Console\Command;
 

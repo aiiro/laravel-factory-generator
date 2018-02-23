@@ -1,6 +1,8 @@
 <?php
 
-namespace Aiiro\Factory\Tests;
+namespace Aiiro\Factory\Tests\Commands;
+
+use Aiiro\Factory\Tests\TestCase;
 
 class GenerateFactoryTest extends TestCase
 {
@@ -10,7 +12,7 @@ class GenerateFactoryTest extends TestCase
      */
     public function it_works_normally()
     {
-        $result = $this->artisan('generate:factory');
+        $result = $this->artisan('generate:factory', ['name' => 'foo']);
 
         $this->assertEquals(0, $result);
     }

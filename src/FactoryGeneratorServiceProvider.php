@@ -2,7 +2,7 @@
 
 namespace Aiiro\Factory;
 
-use Aiiro\Factory\Console\Commands\GenerateFactory;
+use Aiiro\Factory\Commands\GenerateFactory;
 use Illuminate\Support\ServiceProvider;
 
 class FactoryGeneratorServiceProvider extends ServiceProvider
