@@ -1,7 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
-use DummyNamespace\DummyClass;
+use DummyModelNamespace\DummyClass;
 
 $factory->define(DummyClass::class, function (Faker $faker) {
     return [
