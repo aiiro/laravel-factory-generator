@@ -20,5 +20,12 @@
     "require": {},
     "require-dev": {
         "orchestra/testbench": "~3.6"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Aiiro\\Factory\\FactoryGeneratorServiceProvider"
+            ]
+        }
     }
 }
