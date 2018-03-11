@@ -6,7 +6,6 @@ use Aiiro\Factory\Exceptions\UnknownConnectionException;
 use Illuminate\Config\Repository;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Database\Connection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\MySqlConnection;
 use Illuminate\Database\SQLiteConnection;
 use Illuminate\Filesystem\Filesystem;
@@ -27,16 +26,6 @@ class GenerateFactory extends GeneratorCommand
 
     /** @var \Illuminate\Config\Repository */
     protected $config;
-
-    /**
-     * @var array
-     */
-    protected $ignoreColumns = [
-        'id',
-        'deleted_at',
-        Model::CREATED_AT,
-        Model::UPDATED_AT,
-    ];
 
     /**
      * GenerateFactory constructor.
@@ -181,8 +170,10 @@ class GenerateFactory extends GeneratorCommand
     {
         $content = '';
 
+        $ignoreColumns = $this->config->get('factory-generator.ignore_columns');
+
         foreach ($columns as $column) {
-            if (in_array($column, $this->ignoreColumns)) {
+            if (in_array($column, $ignoreColumns)) {
                 continue;
             }
 
