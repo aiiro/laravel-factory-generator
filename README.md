@@ -1,6 +1,8 @@
 <h1 align="center">Generate Laravel Factory Templates</h1>
 
-Make Laravel factory file with the column names of the table.
+Make Laravel factory file with the column names of a table in a database.
+
+![screenshot](https://raw.githubusercontent.com/aiiro/laravel-factory-generator/master/screenshot.png)
 
 ### Installing
 ``` shell
