@@ -170,10 +170,10 @@ class GenerateFactory extends GeneratorCommand
     {
         $content = '';
 
-        $ignoreColumns = $this->config->get('factory-generator.ignore_columns');
+        $ignoredColumns = $this->config->get('factory-generator.ignored_columns');
 
         foreach ($columns as $column) {
-            if (in_array($column, $ignoreColumns)) {
+            if (in_array($column, $ignoredColumns)) {
                 continue;
             }
 
