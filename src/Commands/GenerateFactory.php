@@ -133,7 +133,7 @@ class GenerateFactory extends GeneratorCommand
     {
         $stub = $this->files->get($this->getStub());
 
-        $stub = $this->replaceNamespace($stub, $namespace)->replaceClass($stub, $name);
+        $stub = $this->replaceNamespace($stub, $namespace)->replaceClass($stub, Str::singular($name));
 
         $stub = $this->replaceColumns($stub, $columns);
 
