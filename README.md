@@ -43,10 +43,21 @@ After installing and Configuration, you can generate the factory file by running
 
 Please pass the table name to `generate:factory` command as the argument.
 
-**NOTE**
-This command connects to the database to retrieve the columns from table, so make sure that the database is configured.
 ``` shell
 php artisan generate:factory some_samples
+```
+
+**NOTE**
+This command connects to the database to retrieve the columns from table, so make sure that the database is configured.
+
+#### To generate factories of all tables in database.
+
+Use `--all` option without table name, to generate factories of all tables in database.
+
+If a factory of table exists, it will be skipped and continue to generate factories of other tables.
+
+```bash
+php artisan generate:factory  --all
 ```
 
 ## License

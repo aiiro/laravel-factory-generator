@@ -2,6 +2,9 @@
 
 namespace Aiiro\Factory\Commands;
 
+use Aiiro\Factory\Connections\DatabaseContract;
+use Aiiro\Factory\Connections\MySql;
+use Aiiro\Factory\Connections\Sqlite;
 use Aiiro\Factory\Exceptions\UnknownConnectionException;
 use Illuminate\Config\Repository;
 use Illuminate\Console\GeneratorCommand;
@@ -22,10 +25,17 @@ class GenerateFactory extends GeneratorCommand
     /**
      * @var string
      */
-    protected $name = 'generate:factory';
+    protected $signature = 'generate:factory {name?} {--all}';
 
-    /** @var \Illuminate\Config\Repository */
+    /**
+     * @var \Illuminate\Config\Repository
+     */
     protected $config;
+
+    /**
+     * @var DatabaseContract
+     */
+    protected $database;
 
     /**
      * GenerateFactory constructor.
@@ -40,13 +50,42 @@ class GenerateFactory extends GeneratorCommand
     }
 
     /**
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @return bool|null|void
      * @throws \Aiiro\Factory\Exceptions\UnknownConnectionException
      */
     public function handle()
     {
+        /** @var Connection $conn */
+        $conn = \DB::connection();
+        /** @var \PDO $pdo */
+        $pdo = \DB::connection()->getPdo();
 
-        $table = $this->getNameInput();
+        if ($conn instanceof MySqlConnection) {
+            $this->database = new MySql($pdo);
+        } elseif ($conn instanceof SQLiteConnection) {
+            $this->database = new Sqlite($pdo);
+        } else {
+            throw new UnknownConnectionException('Unknown connection is set.');
+        }
+
+        if ($this->hasOption('all') && $this->option('all')) {
+            $tables = $this->database->fetchTables();
+            foreach ($tables as $tableRecord) {
+                $this->runFactoryBuilder($tableRecord[0]);
+            }
+        } else {
+            $table = $this->getNameInput();
+            $this->runFactoryBuilder($table);
+        }
+    }
+
+    /**
+     * @param $table
+     * @return bool
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    protected function runFactoryBuilder($table)
+    {
         $model = Str::ucfirst(Str::camel($table));
         $factory = Str::singular($model) . 'Factory';
 
@@ -54,33 +93,10 @@ class GenerateFactory extends GeneratorCommand
 
         if ($this->alreadyExists($path)) {
             $this->error($factory . ' already exists!');
-
             return false;
         }
 
-        /** @var Connection $conn */
-        $conn = \DB::connection();
-        /** @var \PDO $pdo */
-        $pdo = \DB::connection()->getPdo();
-
-        $stmt = null;
-        $columns = [];
-
-        if ($conn instanceof MySqlConnection) {
-            $stmt = $pdo->prepare("DESCRIBE $table");
-            $stmt->execute();
-            foreach ($stmt->fetchAll() as $column) {
-                $columns[] = $column['Field'];
-            }
-        } elseif ($conn instanceof SQLiteConnection) {
-            $stmt = $pdo->prepare("PRAGMA table_info($table)");
-            $stmt->execute();
-            foreach ($stmt->fetchAll() as $column) {
-                $columns[] = $column['name'];
-            }
-        } else {
-            throw new UnknownConnectionException('Unknown connection is set.');
-        }
+        $columns = $this->database->fetchColumns($table);
 
         $factoryContent = $this->buildFactory(
             $this->config->get('factory-generator.namespace.model'),
@@ -91,7 +107,6 @@ class GenerateFactory extends GeneratorCommand
         $this->createFile($path, $factoryContent);
 
         $this->info($factory . ' created successfully.');
-
     }
 
     /**
