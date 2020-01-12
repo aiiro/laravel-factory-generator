@@ -188,7 +188,7 @@ class GenerateFactory extends GeneratorCommand
         $ignoredColumns = $this->config->get('factory-generator.ignored_columns');
 
         foreach ($columns as $column) {
-            if (in_array($column, $ignoredColumns)) {
+            if ($ignoredColumns && in_array($column, $ignoredColumns)) {
                 continue;
             }
 

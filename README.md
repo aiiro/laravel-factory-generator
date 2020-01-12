@@ -59,6 +59,9 @@ If a factory of table exists, it will be skipped and continue to generate factor
 ```bash
 php artisan generate:factory  --all
 ```
+#### If you cannot use configuration after publishing
+clear cache with below command.
+`php artisan config:clear`
 
 ## License
 This project is released under MIT License. See [MIT License](LICENSE)
