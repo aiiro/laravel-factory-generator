@@ -38,6 +38,9 @@ $expect = <<<EOT
         'name' => null,
         'email' => null,
         'address' => null,
+        'deleted_at' => null,
+        'created_at' => null,
+        'updated_at' => null,
 EOT;
 
         $this->assertEquals($expect, $content);
