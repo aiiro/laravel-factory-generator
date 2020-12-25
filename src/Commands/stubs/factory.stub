@@ -2,7 +2,9 @@
 
 use Faker\Generator as Faker;
 use DummyModelNamespace\DummyClass;
+use Illuminate\Database\Eloquent\Factory;
 
+/** @var Factory $factory */
 $factory->define(DummyClass::class, function (Faker $faker) {
     return [
 DummyColumns
